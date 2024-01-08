@@ -1,34 +1,58 @@
-# H1 Keywords Checker
-This script automates the process of verifying if the primary keyword for a webpage is present in the H1 tag. It reads a list of URLs and corresponding keywords from an Excel file and outputs the results to a CSV file.
-# Prerequisites
-Before running the script, make sure you have the following installed:
-* Python 3
-* Selenium WebDriver
-* ChromeDriver
-* openpyxl
-* A rank report from Ahrefs in CSV format
+# Selenium SEO Analysis Script
 
-⠀Setup
-**1** **Install Python Dependencies**:
-```bash
-pip install selenium openpyxl
-```
+## Description
 
-**2** **ChromeDriver**: Ensure you have ChromeDriver installed and its path correctly set up. The ChromeDriver version should be compatible with your Chrome browser version.
-**3** **Prepare the Excel File**: Convert your Ahrefs rank report from CSV to XLSX format. You can do this using a spreadsheet program like Microsoft Excel or Google Sheets:
-- Open the CSV file in your spreadsheet program.
-- Save the file as h1keywords.xlsx.
+This Python script automates the process of analyzing SEO-related attributes of web pages listed in an Excel file. It checks for the presence of specified keywords in various parts of a web page, including the title, H1 tag, URL, paragraph tags, image URLs, and alt attributes. It operates in headless mode, meaning it doesn't open an actual browser window. The script generates a CSV file with the results of the analysis.
 
-**4** **Place the Excel File**: Make sure h1keywords.xlsx is in the same directory as your script, or update the input_file_path variable in the script to match the file's location.
-## Running the Script
-To run the script, execute the following command in your terminal:
-```bash
-python h1keys.py
-```
+## Features
 
-The script will process each URL from the Excel file, check for the presence of the primary keyword in the H1 tag, and then save the results to output.csv.
-# Output
-After completion, the script will display a message indicating that the processing is complete and will provide the path to the saved output file. The output.csv file will contain the following columns:
-* **URL**: The webpage URL.
-* **Keyword**: The primary keyword associated with the URL.
-* **Pass/Fail**: Indicates whether the keyword was found in the H1 tag of the webpage.
+- **Keyword Analysis**: Checks if a given keyword is present in the page title, H1 tag, URL, paragraph tags, and image attributes.
+- **Document Analysis**: Determines if a URL points to a document such as a PDF or Word file.
+- **Progress Tracking**: Updates a text-based progress bar in the terminal to indicate the processing status.
+- **Output Generation**: Outputs the results into a CSV file with a unique name to avoid overwriting existing files.
+
+## Dependencies
+
+- **Python 3**: The script is written in Python 3 and requires it to run.
+- **Selenium**: For automating web browser interaction.
+- **openpyxl**: For reading from and writing to Excel files (`.xlsx`).
+- **Chromedriver**: The Chrome WebDriver for Selenium.
+
+## Setup
+
+1. **Install Python 3**: Download and install Python 3 from the [official website](https://www.python.org/).
+2. **Install Dependencies**: Run the following command to install the necessary Python packages:
+
+    ```sh
+    pip install selenium openpyxl
+    ```
+
+3. **Chromedriver**: Download the appropriate version of Chromedriver for your system from the [Chromedriver download page](https://sites.google.com/a/chromium.org/chromedriver/downloads). Ensure it's in your PATH or specify its location in the script.
+
+4. **Input File**: Prepare an Excel file (`rank.xlsx`) with two columns: one for keywords and the other for URLs.
+
+## Usage
+
+1. **Configure Script**: Ensure that the path to `chromedriver` and the input/output file paths in the script are correct.
+2. **Run Script**: Execute the script with the following command:
+
+    ```sh
+    python3 seo_analysis.py
+    ```
+
+3. **Results**: After completion, the script will provide the path to the generated CSV file containing the analysis results.
+
+## Notes
+
+- This script is designed for macOS. If using a different OS, modifications might be necessary.
+- The script prevents the system from sleeping during execution. Ensure that this behavior is acceptable for your use case.
+- The script does not handle all possible exceptions and edge cases. Use it as a starting point and modify it according to your needs.
+
+## Contributing
+
+Contributions to enhance the functionality, improve the efficiency, or fix issues in the script are welcome.
+
+## License
+
+Specify your license or if the script is open for public use.
+
