@@ -1,4 +1,5 @@
 import os
+import subprocess
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -6,6 +7,18 @@ from selenium.webdriver.common.by import By
 from openpyxl import load_workbook
 import csv
 import time
+import re
+
+# Function to prevent the system from sleeping
+def prevent_sleep():
+    return subprocess.Popen(['caffeinate'])
+
+# Function to allow the system to sleep
+def allow_sleep(p):
+    p.terminate()
+
+# Prevent system sleep
+p = prevent_sleep()
 
 # Function to update a text-based progress bar during processing
 def update_progress_bar(total, progress):
@@ -34,7 +47,6 @@ def colored(text, color):
 
 # Function to convert a keyword into a hyphenated format
 def convert_to_hyphenated(keyword):
-    # Convert keyword to string in case it's not
     keyword_str = str(keyword)
     return keyword_str.replace(' ', '-').lower()
 
@@ -49,7 +61,6 @@ def keyword_in_paragraph(keyword, driver):
 # Function to check if the URL is a document (PDF, DOC, DOCX)
 def is_document(url):
     return re.search(r'\.(pdf|docx?)(\?.*)?$', url.lower()) is not None
-
 
 # Function to find the next available file name with an iterative suffix
 def next_available_filename(base_name, extension):
@@ -156,3 +167,6 @@ with open(output_file_path, 'w', newline='', encoding='utf-8') as csvfile:
 
 # Quit the WebDriver
 driver.quit()
+
+# Allow the system to sleep when done
+allow_sleep(p)
