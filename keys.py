@@ -58,6 +58,16 @@ def keyword_in_paragraph(keyword, driver):
             return 'Pass'
     return 'Fail'
 
+def count_total_words(driver):
+    text = driver.find_element(By.TAG_NAME, 'body').text
+    words = text.split()
+    return len(words)
+
+# Function to count the occurrences of the keyword on a page
+def count_keyword_occurrences(keyword, driver):
+    text = driver.find_element(By.TAG_NAME, 'body').text.lower()
+    return text.count(keyword.lower())
+
 # Function to check if the URL is a document (PDF, DOC, DOCX)
 def is_document(url):
     return re.search(r'\.(pdf|docx?)(\?.*)?$', url.lower()) is not None
@@ -143,7 +153,14 @@ for row in ws.iter_rows(min_row=2, values_only=True):
             if hyphenated_keyword in (image.get_attribute('alt') or '').lower():
                 keyword_in_alt_attribute = 'Pass'
 
-        results.append((url, keyword, keyword_in_title, keyword_in_h1, keyword_in_url, keyword_in_paragraph_tag, keyword_in_image_url, keyword_in_alt_attribute))
+        # Count total words and keyword occurrences
+        total_words = count_total_words(driver)
+        keyword_occurrences = count_keyword_occurrences(keyword, driver)
+        
+        # Calculate keyword density
+        keyword_density = (keyword_occurrences / total_words) * 100 if total_words > 0 else 0
+
+        results.append((url, keyword, keyword_in_title, keyword_in_h1, keyword_in_url, keyword_in_paragraph_tag, keyword_in_image_url, keyword_in_alt_attribute, f"{keyword_density:.2f}%"))
 
     except Exception as e:
         print(f"Error processing URL {url}: {e}")
@@ -161,7 +178,7 @@ print('\n' + completion_message + path_message)
 # Write results to the new CSV file
 with open(output_file_path, 'w', newline='', encoding='utf-8') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['URL', 'Keyword', 'Keyword in Title', 'Keyword In H1', 'Keyword in URL', 'Keyword in Paragraph', 'Keyword in Image URL', 'Keyword in Alt Attribute'])
+    writer.writerow(['URL', 'Keyword', 'Keyword in Title', 'Keyword In H1', 'Keyword in URL', 'Keyword in Paragraph', 'Keyword in Image URL', 'Keyword in Alt Attribute', 'Keyword Density'])
     for row in results:
         writer.writerow(row)
 
